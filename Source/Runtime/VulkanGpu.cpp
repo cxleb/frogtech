@@ -1,3 +1,4 @@
+#include "pch.h"
 // disable the "Prefer Scoped enum class", vulkan is written in C and there is no such thing.
 #pragma warning( disable : 26812 )
 #include <map>
@@ -875,7 +876,7 @@ namespace Runtime
 			}
 
 			Shader shader;
-			shader.Index = Shaders.size();
+			shader.Index = (u32)Shaders.size();
 			Shaders.push_back(program);
 
 			return shader;
@@ -915,7 +916,7 @@ namespace Runtime
 
 							vkGetBufferMemoryRequirements(Device, b, &memReq);
 							set.Uniforms[index].BufferOffsets.push_back(allocSize);
-							allocSize += memReq.size;
+							allocSize += (u32)memReq.size;
 						}
 					}
 					index++;
@@ -1110,7 +1111,6 @@ namespace Runtime
 
 			// Create image view
 			{
-				VkResult result;
 				VkImageViewCreateInfo createInfo{};
 				createInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
 				createInfo.image = texture.Image;
@@ -1608,7 +1608,7 @@ namespace Runtime
 		{
 			// get the descriptor set
 			VkDeviceSize offsets[] = { 0, 0, 0, 0, 0, 0, 0, 0 };
-			vkCmdBindVertexBuffers(Buffer, 0, buffer.VertexBuffers.size(), buffer.VertexBuffers.data(), offsets);
+			vkCmdBindVertexBuffers(Buffer, 0, (u32)buffer.VertexBuffers.size(), buffer.VertexBuffers.data(), offsets);
 			vkCmdBindIndexBuffer(Buffer, buffer.IndexBuffer, 0, VK_INDEX_TYPE_UINT32);
 			vkCmdDrawIndexed(Buffer, buffer.indexCount, 1, 0, 0, 0);
 		}
