@@ -26,4 +26,7 @@ void main()
 	float specular = max(dot(normal, toLightDir), 0.0) > 0.0 ? pow(max(dot(toCameraDir, reflect(toLightDir, normal)), 0.0), 32) : 0.0;
 
 	outColor = texture(albedoSampler, vTextureCoord) * (specular + diffuse);
+
+	outColor.rgb = pow(outColor.rgb, vec3(1.0 / 2.2));
+
 }

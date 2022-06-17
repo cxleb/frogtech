@@ -52,7 +52,7 @@ namespace Runtime
 		auto shader = Graphics::Gpu::CreateShaderFromFile(layout, "shader.vert.glsl", "shader.frag.glsl");
 
 		int w, h, c;
-		auto pixels = stbi_load("uv-test.png", &w, &h, &c, 4);
+		auto pixels = stbi_load("daniel.png", &w, &h, &c, 4);
 		auto texture = Graphics::Gpu::CreateTexture(pixels, w, h);
 		
 		auto ubo = Graphics::Gpu::CreateUniformSet(shader, layout);
