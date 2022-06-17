@@ -45,7 +45,7 @@ namespace Runtime
 		Graphics::ShaderLayout layout;
 		layout.SetUniform<UBO>(0);
 		layout.SetUniform<Graphics::Texture>(1);
-		layout.SetConstant<Model>();
+		layout.SetConstant<Math::Mat4>();
 
 		auto shader = Graphics::Gpu::CreateShaderFromFile(layout, "shader.vert.glsl", "shader.frag.glsl");
 
