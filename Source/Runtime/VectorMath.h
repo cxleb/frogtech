@@ -79,6 +79,47 @@ namespace Runtime
 			__m128 value;
 		};
 
+		struct Quaternion
+		{
+			Quaternion() = default;
+			Quaternion(const Quaternion& other) = default;
+			Quaternion(Quaternion&& other) = default;
+			Quaternion& operator=(const Quaternion& b) = default;
+			Quaternion& operator=(Quaternion&& b) = default;
+
+			// note(caleb): from wikipedia lol
+			static Quaternion FromEuler(float rx, float ry, float rz)
+			{
+				// Abbreviations for the various angular functions
+				float cr = (float)cos(rx * 0.5);
+				float sr = (float)sin(rx * 0.5);
+				float sp = (float)sin(ry * 0.5);
+				float cp = (float)cos(ry * 0.5);
+				float cy = (float)cos(rz * 0.5);
+				float sy = (float)sin(rz * 0.5);
+
+				float w = cr * cp * cy + sr * sp * sy;
+				float x = sr * cp * cy - cr * sp * sy;
+				float y = cr * sp * cy + sr * cp * sy;
+				float z = cr * cp * sy - sr * sp * cy;
+
+				Quaternion q;
+				q.value = _mm_setr_ps(x, y, z, w);
+				return q;
+			}
+
+
+
+			__m128 value;
+		};
+
+		struct Transform
+		{
+			Vector Position;
+			Vector Scale;
+			Quaternion Rotation;
+		};
+
 		struct Mat4
 		{
 			Mat4() = default;
@@ -273,6 +314,65 @@ namespace Runtime
 				mat.c1 = _mm_setr_ps( cos(d), sin(d), 0.0f, 0.0f);
 				mat.c2 = _mm_setr_ps(-sin(d), cos(d), 0.0f, 0.0f);
 				return mat;
+			}
+
+			static Mat4 Rotate(Quaternion q)
+			{
+				float v[4];
+				_mm_store_ps(v, q.value);
+				float qx = v[0];
+				float qxx = qx * qx;
+				float qy = v[1];
+				float qyy = qy * qy;
+				float qz = v[2];
+				float qzz = qz * qz;
+				float qw = v[3];
+				
+				float m0[4];
+				float m1[4];
+				float m2[4];
+				float m3[4];
+				m0[0] = 1.f - 2.f * qyy - 2.f * qzz;
+				m0[1] = 2.f * qx * qy + 2.f * qz * qw;
+				m0[2] = 2.f * qx * qz - 2.f * qy * qw;
+				m0[3] = 0.f;
+				m1[0] = 2.f * qx * qy - 2.f * qz * qw;
+				m1[1] = 1.f - 2.f * qxx - 2.f * qzz;
+				m1[2] = 2.f * qy * qz + 2.f * qx * qw;
+				m1[3] = 0.f;
+				m2[0] = 2.f * qx * qz + 2.f * qy * qw;
+				m2[1] = 2.f * qy * qz - 2.f * qx * qw;
+				m2[2] = 1.f - 2.f * qxx - 2.f * qyy;
+				m2[3] = 0.f;
+				m3[0] = 0.f;
+				m3[1] = 0.f;
+				m3[2] = 0.f;
+				m3[3] = 1.0f;
+
+				Mat4 m;
+				m.c1 = _mm_load_ps(m0);
+				m.c2 = _mm_load_ps(m1);
+				m.c3 = _mm_load_ps(m2);
+				m.c4 = _mm_load_ps(m3);
+				return m;
+			}
+
+			static Mat4 CreateTransform(Transform t)
+			{
+				Mat4 m = Identity();
+				m *= Rotate(t.Rotation);
+				m *= Scale(t.Scale);
+				m *= Translate(t.Position);
+				return m;
+			}
+
+			static Mat4 CreateTransform(Transform t, Mat4 p)
+			{
+				Mat4 m = p;
+				m *= Rotate(t.Rotation);
+				m *= Scale(t.Scale);
+				m *= Translate(t.Position);
+				return m;
 			}
 
 			__m128 c1;

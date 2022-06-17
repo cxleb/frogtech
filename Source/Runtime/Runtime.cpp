@@ -25,11 +25,6 @@ namespace Runtime
 		Math::Mat4 View;
 	};
 
-	struct Model
-	{
-		Math::Mat4 Model;
-	};
-
 	void Runtime::Main()
 	{
 		ImGui::CreateContext();
@@ -95,18 +90,20 @@ namespace Runtime
 			Graphics::Gpu::UpdateUniformSet(0, ubo, test);
 			buffer.BindUniformSet(0, ubo);
 
-			Model model{};
-			model.Model = Math::Mat4::Scale(1.0f + sin(rotation) / 2.0f);
-			model.Model *= Math::Mat4::RotateY(3.1415f + rotation);
-			rotation += 0.01f;
-			buffer.BindConstant(model);
+			Math::Transform t;
+			t.Position = Math::Vector(2.0f, 0, 0);
+			t.Scale = Math::Vector(1, 1, 1);
+			t.Rotation = Math::Quaternion::FromEuler(0, rotation, 3.1415f);
+			auto m = Math::Mat4::CreateTransform(t);
+			buffer.BindConstant(m);
 
 			buffer.Draw(suzanne);
 
-			model.Model = Math::Mat4::Scale(1.0f + sin(rotation) / 2.0f);
-			model.Model *= Math::Mat4::RotateY(3.1415f + rotation);
-			model.Model *= Math::Mat4::Translate(5.0f, 0.0f, 0.0f);
-			buffer.BindConstant(model);
+			t.Position = Math::Vector(-2.0f, 0, 0);
+			//t.Scale = Math::Vector(1, 1, 1);
+			t.Rotation = Math::Quaternion::FromEuler(0, 3.1415f + rotation, 3.1415f);
+			m = Math::Mat4::CreateTransform(t);
+			buffer.BindConstant(m);
 
 			buffer.Draw(suzanne);
 
@@ -115,6 +112,8 @@ namespace Runtime
 			buffer.EndRenderPass(Graphics::Gpu::GetSwapchainBuffer());
 
 			Graphics::Gpu::Submit();
+
+			rotation += 0.01f;
 
 			auto deltaTime = std::chrono::high_resolution_clock::now().time_since_epoch() - LastTime.time_since_epoch();
 			if (deltaTime.count() >= 1000000000L) // 1 second
