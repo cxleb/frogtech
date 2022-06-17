@@ -1,15 +1,20 @@
 #include "pch.h"
 // disable the "Prefer Scoped enum class", vulkan is written in C and there is no such thing.
 #pragma warning( disable : 26812 )
-#include <map>
+
+// include before our own header to include windows.h
+#define VK_USE_PLATFORM_WIN32_KHR
+#include "vulkan/vulkan.h"
 
 #include "VulkanGpu.h"
 
 #include "backends/imgui_impl_vulkan.h"
 #include "VulkanUtils.h"
 
-extern HWND WindowHandle;
+#include <map>
 
+// extern window handle from Win32.cpp
+extern HWND WindowHandle;
 
 // for now this is a function, otherwise this should be a macro that is removes this function
 inline void VulkanCheck(VkResult result)
@@ -313,9 +318,14 @@ namespace Runtime
 
 		void Gpu::ResizeSwapchain()
 		{
+			if (Device == nullptr)
+				return;
+
+			SyncGpu();
+
 			// firstly clear all the resources assoicated with the swapchain
 			{
-				vkDestroyRenderPass(Device, SwapchainBuffer.RenderPass, nullptr);
+				//vkDestroyRenderPass(Device, SwapchainBuffer.RenderPass, nullptr);
 
 				for (VkImageView view : SwapchainBuffer.ImageViews)
 					vkDestroyImageView(Device, view, nullptr);
@@ -328,6 +338,10 @@ namespace Runtime
 					vkDestroyFramebuffer(Device, framebuffer, nullptr);
 				
 				vkDestroySwapchainKHR(Device, Swapchain, nullptr);
+
+				SwapchainBuffer.Images.clear();
+				SwapchainBuffer.ImageViews.clear();
+				SwapchainBuffer.Framebuffers.clear();
 			}
 
 			// if your computer doesnt support this what the fuck

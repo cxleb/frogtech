@@ -203,6 +203,7 @@
     </ClCompile>
     <ClCompile Include="Source\Runtime\VulkanGpu.cpp" />
     <ClCompile Include="Source\Runtime\VulkanUtils.cpp" />
+    <ClCompile Include="Source\Runtime\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\pch.h" />
@@ -225,6 +226,7 @@
     <ClInclude Include="vendor\imgui\imstb_truetype.h" />
     <ClInclude Include="Source\Runtime\VulkanGpu.h" />
     <ClInclude Include="Source\Runtime\VulkanUtils.h" />
+    <ClInclude Include="Source\Runtime\Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

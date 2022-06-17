@@ -3,6 +3,8 @@
 #include <windows.h>
 #include "win32.h"
 
+#include "Window.h"
+
 #include "backends/imgui_impl_vulkan.h"
 #include "backends/imgui_impl_win32.h"
 
@@ -19,7 +21,7 @@ static LRESULT WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	switch (uMsg)
 	{
 	case WM_CREATE:
-		SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR)((CREATESTRUCT*)lParam)->lpCreateParams);
+		//SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR)((CREATESTRUCT*)lParam)->lpCreateParams);
 		break;
 	case WM_CLOSE:
 		//callback->RegisterEvent<WindowEvent::Close>();
@@ -28,9 +30,13 @@ static LRESULT WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_DESTROY:
 		exit(0);
 		break;
-	case WM_SIZING:
 	case WM_SIZE:
+	case WM_SIZING:
 		//callback->RegisterEvent<WindowEvent::Resize>();
+		Runtime::Window::PushEvent({ 
+			.Type = Runtime::WindowEvent::WINDOW_RESIZE,
+			.Window = {}
+		});
 		break;
 	default:
 		return DefWindowProc(hWnd, uMsg, wParam, lParam);

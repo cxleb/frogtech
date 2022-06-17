@@ -1,6 +1,6 @@
 #pragma once
 
-#include <unordered_map>
+#include <map>
 #include <chrono>
 
 using f32 = float;
@@ -46,7 +46,7 @@ public:
 	}
 private:
 	static TimerCollection* collection;
-	std::unordered_map<const char*, float> times;
+	std::map<const char*, float> times;
 };
 
 class ScopeTimer

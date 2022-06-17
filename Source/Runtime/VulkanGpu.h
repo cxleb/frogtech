@@ -4,7 +4,6 @@
 #include <vector>
 #include <map>
 
-#define VK_USE_PLATFORM_WIN32_KHR
 #include "vulkan/vulkan.h"
 
 namespace Runtime
@@ -156,6 +155,12 @@ namespace Runtime
 			VkImageView DepthImageView;
 			std::vector<VkFramebuffer> Framebuffers;
 			VkRenderPass RenderPass;
+		public:
+			void GetSize(u32* width, u32* height)
+			{
+				*width = RenderExtent.width;
+				*height = RenderExtent.height;
+			}
 		};
 
 		class VertexBuffer
