@@ -1,6 +1,6 @@
 #pragma once
 #include "pch.h"
-
+#include "Math/Math.h"
 namespace Runtime
 {
 	namespace Graphics
@@ -12,8 +12,13 @@ namespace Runtime
 		class Renderer
 		{
 		public:
+			static Material CreateMaterial();
+			static Model	CreateModel();
+			static Mesh		CreateMesh();
+
 			static void Draw();
-			static void Submit();
+			static void SubmitMesh(const Mesh mesh, const Material material, const Math::Transform& transform);
+			static void Submit(const Model mesh, const Math::Transform& transform);
 		};
 	}
 }

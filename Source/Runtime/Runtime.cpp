@@ -7,7 +7,7 @@
 #include "VulkanUtils.h"
 
 #include "Editor/suzanne.h"
-#include "vectormath.h"
+#include "Math/Math.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"

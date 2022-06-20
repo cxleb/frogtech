@@ -214,7 +214,7 @@
     <ClInclude Include="Source\Runtime\Math.h" />
     <ClInclude Include="Source\Runtime\Physics.h" />
     <ClInclude Include="Source\Runtime\Runtime.h" />
-    <ClInclude Include="Source\Runtime\VectorMath.h" />
+    <ClInclude Include="Source\Runtime\Math\Math.h" />
     <ClInclude Include="Source\Runtime\Win32.h" />
     <ClInclude Include="vendor\imgui\backends\imgui_impl_vulkan.h" />
     <ClInclude Include="vendor\imgui\backends\imgui_impl_win32.h" />

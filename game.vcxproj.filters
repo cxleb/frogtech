@@ -119,7 +119,7 @@
     <ClInclude Include="Source\pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Runtime\VectorMath.h">
+    <ClInclude Include="Source\Runtime\Math\Math.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Runtime\Window.h">

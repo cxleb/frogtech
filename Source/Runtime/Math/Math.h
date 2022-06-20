@@ -115,6 +115,12 @@ namespace Runtime
 
 		struct Transform
 		{
+			Transform() = default;
+			Transform(const Transform& other) = default;
+			Transform(Transform&& other) = default;
+			Transform& operator=(const Transform& b) = default;
+			Transform& operator=(Transform&& b) = default;
+
 			Vector Position;
 			Vector Scale;
 			Quaternion Rotation;
