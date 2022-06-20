@@ -66,15 +66,17 @@ namespace Runtime
 
 		Material Renderer::CreateMaterial()
 		{
-
+			return Material();
 		}
 
 		Model Renderer::CreateModel()
 		{
+			return Model();
 		}
 
 		Mesh Renderer::CreateMesh()
 		{
+			return Mesh();
 		}
 
 		void Renderer::Draw()

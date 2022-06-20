@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Runtime/VectorMath.h"
+#include "Runtime/Math/Math.h"
 
 namespace Runtime
 {

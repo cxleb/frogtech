@@ -19,7 +19,6 @@
 //	return EXIT_SUCCESS;
 //}
 
-#include "Runtime/VectorMath.h"
 #include "Runtime/Physics.h"
 
 int main()
